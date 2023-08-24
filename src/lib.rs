@@ -11,18 +11,24 @@ mod test {
             ._batch((
                 client
                     .org()
-                    .find_many(Vec::from([prisma::org::pos::some(Vec::from([
+                    .find_first(Vec::from([prisma::org::pos::every(Vec::from([
                         prisma::pos::tags::every(Vec::from([prisma::pos_tag::name::equals(
                             "CEO".to_string(),
                         )])),
-                    ]))])),
+                    ]))]))
+                    .with(
+                        prisma::org::pos::fetch(Vec::from(vec![]))
+                            .with(prisma::pos::tags::fetch(vec![]))
+                            .with(prisma::pos::org::fetch()),
+                    ),
                 client
                     .employee()
-                    .find_first(Vec::from([prisma::employee::pos::every(Vec::from([
+                    .find_many(Vec::from([prisma::employee::pos::every(Vec::from([
                         prisma::pos::tags::every(Vec::from([prisma::pos_tag::name::equals(
                             "CEO".to_string(),
                         )])),
-                    ]))])),
+                    ]))]))
+                    .take(2),
             ))
             .await
             .unwrap();
@@ -94,6 +100,5 @@ mod test {
     }
 }
 
-mod prisma {
-    include!(concat!(env!("OUT_DIR"), "/generated.rs"));
-}
+#[allow(warnings, unused)]
+mod prisma;
