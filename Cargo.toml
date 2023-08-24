@@ -1,0 +1,18 @@
+[package]
+name = "oranges-tree"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace]
+members = ["prisma-cli"]
+
+[dependencies]
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.9" }
+serde = "1.0.185"
+tokio = { version = "1.32.0", features = ["full"] }
+
+
+[dependencies.uuid]
+version = "1.4.1"
+features = ["v4", "fast-rng", "macro-diagnostics"]
